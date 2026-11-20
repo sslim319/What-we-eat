@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<title>3x3 Lucky Draw</title>
+	<style>
+		body {
+			font-family: 'Segoe UI', sans-serif;
+			background: #fff8dc;
+			text-align: center;
+			padding: 30px 10px;
+		}
+
+		h1 {
+			color: #c0392b;
+			font-size: 32px;
+		}
+
+		#progress-container {
+			width: 80%;
+			max-width: 400px;
+			height: 20px;
+			background: #eee;
+			border-radius: 10px;
+			overflow: hidden;
+			margin: 20px auto;
+			display: none;
+		}
+
+		#progress-bar {
+			height: 100%;
+			width: 0%;
+			background: #e67e22;
+			transition: width 2s ease-in-out;
+		}
+
+		.grid {
+			display: grid;
+			grid-template-columns: repeat(4, 1fr);
+			gap: 15px;
+			max-width: 400px;
+			margin: 30px auto;
+		}
+
+		.item {
+			background: #fefefe;
+			border: 2px dashed #f39c12;
+			border-radius: 10px;
+			padding: 20px;
+			font-size: 16px;
+			font-weight: bold;
+			position: relative;
+			min-height: 80px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.selected {
+			background: #2ecc71;
+			color: white;
+			border-color: #27ae60;
+		}
+
+		.arrow {
+			position: absolute;
+			top: -25px;
+			left: 50%;
+			transform: translateX(-50%);
+			font-size: 24px;
+			color: #e74c3c;
+			display: none;
+			animation: bounce 0.6s infinite alternate;
+		}
+
+		@keyframes bounce {
+			from { transform: translateX(-50%) translateY(0); }
+			to   { transform: translateX(-50%) translateY(-5px); }
+		}
+
+		button {
+			padding: 12px 30px;
+			font-size: 18px;
+			background: linear-gradient(45deg, #e67e22, #e74c3c);
+			color: white;
+			border: none;
+			border-radius: 30px;
+			cursor: pointer;
+			margin-top: 20px;
+		}
+
+		button:hover {
+			background: #d35400;
+		}
+	</style>
+</head>
+<body>
+	<h1>🎯 What Shall We Eat?</h1>
+
+	<div id="progress-container">
+		<div id="progress-bar"></div>
+	</div>
+
+	<div class="grid" id="foodGrid"></div>
+
+	<button onclick="startDraw()">Start Draw</button>
+
+	<script>
+		// change here
+		const foods = ["Chicken Rice", "Zap Fan", "Sukiya", "Teppanyaki", "Ichiban Ramen", "Sushi Jiro", "Yi Poh", "Thai Aroi", "OD", "Aunty Zap Fan","Kuali"];
+
+		const grid = document.getElementById("foodGrid");
+		const progress = document.getElementById("progress-bar");
+		const progressContainer = document.getElementById("progress-container");
+
+		// Generate 3x3 grid
+		foods.forEach(food => {
+			const div = document.createElement("div");
+			div.className = "item";
+			div.innerHTML = `<span class="arrow">⬇️</span>${food}`;
+			grid.appendChild(div);
+		});
+
+		function startDraw() {
+			const items = document.querySelectorAll(".item");
+			items.forEach(item => {
+				item.classList.remove("selected");
+				item.querySelector(".arrow").style.display = "none";
+			});
+
+			progressContainer.style.display = "block";
+			progress.style.width = "0%";
+			setTimeout(() => {
+				progress.style.width = "100%";
+			}, 50);
+
+			setTimeout(() => {
+				const randomIndex = Math.floor(Math.random() * items.length);
+				const selectedItem = items[randomIndex];
+				selectedItem.classList.add("selected");
+				selectedItem.querySelector(".arrow").style.display = "block";
+				progressContainer.style.display = "none";
+				progress.style.width = "0%";
+			}, 2200);
+		}
+	</script>
+</body>
+</html>
